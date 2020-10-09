@@ -4,6 +4,7 @@ import os
 from re import error
 import discord
 from discord import Embed
+from discord import member
 from discord.ext import commands
 from discord.utils import get
 
@@ -15,7 +16,7 @@ au_config_model = {
     'management_commands_access_roles': [],
 }
 
-AU_CONFIG_PATH = './au_config.json'
+AU_CONFIG_PATH = './cogs/au_config.json'
 
 
 def role_exists(ctx: commands.Context, role):
@@ -121,6 +122,20 @@ class au(commands.Cog):
                 await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
         else:
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['public_commands_access_roles'])))
+
+    @au.command(aliases=['ureg'])
+    async def unregister(self, ctx: commands.Context):
+        if not self.session_running:
+            await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
+            return None
+        member = ctx.author
+        if member not in self.que:
+            await ctx.send(embed=Embed(title=f':x: Cannot unregister, {member.name} didn\'t register for the session.'))
+            return None
+        self.que.remove(member)
+        if member in self.running_que:
+            self.running_que.remove(member)
+        await ctx.send(embed=Embed(title=f':rocket: {member} unregistered.'))
 
     @au.command(aliases=['sbl'])
     async def session_blacklist(self, ctx: commands.Context, member: discord.Member):
