@@ -235,6 +235,9 @@ class au(commands.Cog):
 
     @au.command(aliases=['lr'])
     async def list_registered(self, ctx: commands.Context):
+        if not self.session_running:
+            await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
+            return None
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
             return None
