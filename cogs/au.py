@@ -1,6 +1,7 @@
 import random
 import json
 import os
+from re import error
 import discord
 from discord import Embed
 from discord.ext import commands
@@ -182,55 +183,55 @@ class au(commands.Cog):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
 
     @au.command(aliases=['p'])
-    async def pick(self, ctx: commands.Context, code: str, server: str, indicator):
+    async def pick(self, ctx: commands.Context, code: str, server: str, number=9):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
             return None
         if not self.session_running:
             await ctx.send(embed=Embed(title=':x: No Among Us sessions are currently running.'))
-        if indicator == None:
-            indicator = 9
-        try:
-            number = int(indicator)
-            if len(self.running_que) < number:
-                await ctx.send(embed=Embed(title=f':x: Error cannot pick {number} players out of the {len(self.running_que)} registered players.'))
-                return None
-            picked_members = random.sample(self.running_que, number)
-            self.running_que = [
-                member for member in self.running_que if member not in picked_members]
 
+        if len(self.running_que) < number:
+            await ctx.send(embed=Embed(title=f':x: Error cannot pick {number} players out of the {len(self.running_que)} registered players.'))
+            return None
+        picked_members = random.sample(self.running_que, number)
+        self.running_que = [
+            member for member in self.running_que if member not in picked_members]
+
+        embed = Embed(
+            title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
+        embed.add_field(
+            name='Click below to reveal the Code', value=f'||{code}||')
+        embed.add_field(
+            name='Click below to reveal the Server', value=f'||{server}||')
+
+        for _member in picked_members:
+            await _member.send(embed=embed)
+
+        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in picked_members])))
+
+    @au.command(aliases=['pm'])
+    async def pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
+        if member not in self.que:
+            await ctx.send(embed=Embed(title=f':x: Could not pick {member}, didn\'t registered.'))
+            return None
+        if member not in self.running_que:
+            await ctx.send(embed=Embed(title=f':x: {member} is already picked for the game.'))
+            return None
+        if member in self.running_que:
             embed = Embed(
                 title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
             embed.add_field(
                 name='Click below to reveal the Code', value=f'||{code}||')
             embed.add_field(
-                name='Click below to reveal the Server', value=f'||{server}||')
+                name='Click below to reveal the Region', value=f'||{server}||')
+            await member.send(embed=embed)
+            await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
+            self.running_que.remove(member)
 
-            for _member in picked_members:
-                await _member.send(embed=embed)
-
-            await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in picked_members])))
-        except Exception as e:
-            try:
-                member = await commands.MemberConverter().convert(ctx, indicator)
-                if member not in self.que:
-                    await ctx.send(embed=Embed(title=f':x: Could not pick {member}, didn\'t registered.'))
-                    return None
-                if member not in self.running_que:
-                    await ctx.send(embed=Embed(title=f':x: {member} is already picked for the game.'))
-                    return None
-                if member in self.running_que:
-                    embed = Embed(
-                        title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
-                    embed.add_field(
-                        name='Click below to reveal the Code', value=f'||{code}||')
-                    embed.add_field(
-                        name='Click below to reveal the Region', value=f'||{server}||')
-                    await member.send(embed=embed)
-                    await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
-                    self.running_que.remove(member)
-            except commands.BadArgument:
-                await ctx.send(embed=Embed(title=f':x: Could not find the member {indicator}'))
+    @pick_member.error
+    async def pick_member_error(self, ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=Embed(title=f':x: Could not find that member.'))
 
     @au.command(aliases=['lr'])
     async def list_registered(self, ctx: commands.Context):
