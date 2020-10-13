@@ -123,19 +123,19 @@ class au(commands.Cog):
         else:
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['public_commands_access_roles'])))
 
-    @au.command(aliases=['ureg'])
-    async def unregister(self, ctx: commands.Context):
-        if not self.session_running:
-            await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
-            return None
-        member = ctx.author
-        if member not in self.que:
-            await ctx.send(embed=Embed(title=f':x: Cannot unregister, {member.name} didn\'t register for the session.'))
-            return None
-        self.que.remove(member)
-        if member in self.running_que:
-            self.running_que.remove(member)
-        await ctx.send(embed=Embed(title=f':rocket: {member} unregistered.'))
+    # @au.command(aliases=['ureg'])
+    # async def unregister(self, ctx: commands.Context):
+    #     if not self.session_running:
+    #         await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
+    #         return None
+    #     member = ctx.author
+    #     if member not in self.que:
+    #         await ctx.send(embed=Embed(title=f':x: Cannot unregister, {member.name} didn\'t register for the session.'))
+    #         return None
+    #     self.que.remove(member)
+    #     if member in self.running_que:
+    #         self.running_que.remove(member)
+    #     await ctx.send(embed=Embed(title=f':rocket: {member} unregistered.'))
 
     @au.command(aliases=['sbl'])
     async def session_blacklist(self, ctx: commands.Context, member: discord.Member):
@@ -147,6 +147,10 @@ class au(commands.Cog):
                 return None
             if member not in self.session_blacklist:
                 self.session_blacklist.append(member)
+                if member in self.que:
+                    self.que.remove(member)
+                if member in self.running_que:
+                    self.que.remove(member)
                 await ctx.send(embed=Embed(title=f':rocket: {member} blacklisted for the session.'))
             else:
                 await ctx.send(embed=Embed(title=f':x: Error {member} is already blacklisted for the session.'))
@@ -198,7 +202,9 @@ class au(commands.Cog):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
 
     @au.command(aliases=['p'])
-    async def pick(self, ctx: commands.Context, code: str, server: str, number=9):
+    async def pick(self, ctx: commands.Context, code: str, server: str, number: int = None):
+        if number == None:
+            number = 9
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
             return None
@@ -242,6 +248,17 @@ class au(commands.Cog):
             await member.send(embed=embed)
             await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
             self.running_que.remove(member)
+
+    @au.command(aliases=['fpm'])
+    async def force_pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
+        embed = Embed(
+            title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
+        embed.add_field(
+            name='Click below to reveal the Code', value=f'||{code}||')
+        embed.add_field(
+            name='Click below to reveal the Region', value=f'||{server}||')
+        await member.send(embed=embed)
+        await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
 
     @pick_member.error
     async def pick_member_error(self, ctx: commands.Context, error):
