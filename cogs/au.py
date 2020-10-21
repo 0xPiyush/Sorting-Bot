@@ -46,6 +46,9 @@ class au(commands.Cog):
         self.code = ''
         self.region = ''
 
+        self.picked_members = []
+        self.unreachable_members = []
+
         global AU_CONFIG_PATH
         self.config = self.load_au_config(AU_CONFIG_PATH)
 
@@ -214,9 +217,9 @@ class au(commands.Cog):
         if len(self.running_que) < number:
             await ctx.send(embed=Embed(title=f':x: Error cannot pick {number} players out of the {len(self.running_que)} registered players.'))
             return None
-        picked_members = random.sample(self.running_que, number)
+        self.picked_members = random.sample(self.running_que, number)
         self.running_que = [
-            member for member in self.running_que if member not in picked_members]
+            member for member in self.running_que if member not in self.picked_members]
 
         embed = Embed(
             title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
@@ -225,10 +228,32 @@ class au(commands.Cog):
         embed.add_field(
             name='Click below to reveal the Server', value=f'||{server}||')
 
-        for _member in picked_members:
-            await _member.send(embed=embed)
+        for _member in self.picked_members:
+            try:
+                await _member.send(embed=embed)
+            except discord.Forbidden:
+                self.picked_members.remove(_member)
+                self.unreachable_members.append(_member)
 
-        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in picked_members])))
+        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
+        await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member.name for member in self.unreachable_members])))
+
+    @au.command(aliases=['rp'])
+    async def repick(self, ctx: commands.Context, code: str, server: str):
+        if len(self.picked_members) > 0:
+            embed = Embed(
+                title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
+            embed.add_field(
+                name='Click below to reveal the Code', value=f'||{code}||')
+            embed.add_field(
+                name='Click below to reveal the Server', value=f'||{server}||')
+
+            for _member in self.picked_members:
+                await _member.send(embed=embed)
+
+            await ctx.send(embed=Embed(title=f':rocket: {len(self.picked_members)} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
+        else:
+            await ctx.send(embed=Embed(title=':x: Error Could not repick members, no members have been previously picked.'))
 
     @au.command(aliases=['pm'])
     async def pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
