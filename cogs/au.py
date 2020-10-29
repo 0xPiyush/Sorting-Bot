@@ -208,6 +208,8 @@ class au(commands.Cog):
     async def pick(self, ctx: commands.Context, code: str, server: str, number: int = None):
         if number == None:
             number = 9
+
+        self.unreachable_members = []
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
             return None
@@ -236,7 +238,9 @@ class au(commands.Cog):
                 self.unreachable_members.append(_member)
 
         await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
-        await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member.name for member in self.unreachable_members])))
+
+        if len(self.unreachable_members) > 0:
+            await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member.name for member in self.unreachable_members])))
 
     @au.command(aliases=['rp'])
     async def repick(self, ctx: commands.Context, code: str, server: str):
@@ -270,11 +274,14 @@ class au(commands.Cog):
                 name='Click below to reveal the Code', value=f'||{code}||')
             embed.add_field(
                 name='Click below to reveal the Region', value=f'||{server}||')
-            await member.send(embed=embed)
-            await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
-            self.running_que.remove(member)
+            try:
+                await member.send(embed=embed)
+                await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
+                self.running_que.remove(member)
+            except discord.Forbidden:
+                await ctx.send(embed=Embed(title=f':x: Could not DM {member}, run the command again to pick again.'))
 
-    @au.command(aliases=['fpm'])
+    @ au.command(aliases=['fpm'])
     async def force_pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
         embed = Embed(
             title=f':tada: Congratulations, You have been selected you play Among Us in this round :tada:')
@@ -285,12 +292,12 @@ class au(commands.Cog):
         await member.send(embed=embed)
         await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
 
-    @pick_member.error
+    @ pick_member.error
     async def pick_member_error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(embed=Embed(title=f':x: Could not find that member.'))
 
-    @au.command(aliases=['lr'])
+    @ au.command(aliases=['lr'])
     async def list_registered(self, ctx: commands.Context):
         if not self.session_running:
             await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
@@ -300,7 +307,7 @@ class au(commands.Cog):
             return None
         await ctx.send(embed=Embed(title='The list of players who have registered for the session:', description='\n'.join([member.name for member in self.que])))
 
-    @au.command(aliases=['lp'])
+    @ au.command(aliases=['lp'])
     async def list_played(self, ctx: commands.Context):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -310,12 +317,12 @@ class au(commands.Cog):
 
         await ctx.send(embed=Embed(title='The list of players who have already played in a round:', description='\n'.join([player.name for player in played])))
 
-    @au.group(aliases=['pcc'])
+    @ au.group(aliases=['pcc'])
     async def public_commands_channels(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.send(embed=Embed(title=':x: Error, incomplete Command, plesase provide a subcommand'))
 
-    @public_commands_channels.command(aliases=['add', 'a'])
+    @ public_commands_channels.command(aliases=['add', 'a'])
     async def add_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -330,7 +337,7 @@ class au(commands.Cog):
         except commands.ChannelNotFound:
             await ctx.send(embed=Embed(title=f':x: Error adding "{channel.name}", no such channel exists in the guild.'))
 
-    @public_commands_channels.command(aliases=['remove', 'r'])
+    @ public_commands_channels.command(aliases=['remove', 'r'])
     async def remove_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -345,12 +352,12 @@ class au(commands.Cog):
         except commands.ChannelNotFound:
             await ctx.send(embed=Embed(title=f':x: Error removing "{channel.name}", no such channel exists in the guild.'))
 
-    @au.group(aliases=['mcc'])
+    @ au.group(aliases=['mcc'])
     async def management_commands_channel(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.send(embed=Embed(title=':x: Error, incomplete Command, plesase provide a subcommand'))
 
-    @management_commands_channel.command(aliases=['add', 'a'])
+    @ management_commands_channel.command(aliases=['add', 'a'])
     async def add_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -362,7 +369,7 @@ class au(commands.Cog):
         except commands.ChannelNotFound:
             await ctx.send(embed=Embed(title=f':x: Error adding "{channel.name}", no such channel exists in the guild.'))
 
-    @management_commands_channel.command(aliases=['remove', 'r'])
+    @ management_commands_channel.command(aliases=['remove', 'r'])
     async def remove_channel(self, ctx: commands.Context, channel: discord.TextChannel):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -377,12 +384,12 @@ class au(commands.Cog):
         except commands.ChannelNotFound:
             await ctx.send(embed=Embed(title=f':x: Error removing "{channel.name}", no such channel exists in the guild.'))
 
-    @au.group(aliases=['mr'])
+    @ au.group(aliases=['mr'])
     async def management_roles(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.send(embed=Embed(title=':x: Error, incomplete Command, plesase provide a subcommand'))
 
-    @management_roles.command(aliases=['a'])
+    @ management_roles.command(aliases=['a'])
     async def add(self, ctx: commands.Context, role: discord.Role):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -394,7 +401,7 @@ class au(commands.Cog):
         else:
             await ctx.send(embed=Embed(title=f':x: Error, "{role.name}" role is already in AU management roles.'))
 
-    @management_roles.command(aliases=['r'])
+    @ management_roles.command(aliases=['r'])
     async def remove(self, ctx: commands.Context, role: discord.Role):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -406,12 +413,12 @@ class au(commands.Cog):
         else:
             await ctx.send(embed=Embed(title=f':x: Error, "{role.name}" role is not in AU management roles.'))
 
-    @au.group(aliases=['pr'])
+    @ au.group(aliases=['pr'])
     async def public_roles(self, ctx: commands.Context):
         if ctx.invoked_subcommand is None:
             await ctx.send(embed=Embed(title=':x: Error, incomplete Command, plesase provide a subcommand'))
 
-    @public_roles.command(aliases=['a'])
+    @ public_roles.command(aliases=['a'])
     async def add(self, ctx: commands.Context, role: discord.Role):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
@@ -423,7 +430,7 @@ class au(commands.Cog):
         else:
             await ctx.send(embed=Embed(title=f':x: Error, "{role.name}" role is already in public commands access roles.'))
 
-    @public_roles.command(aliases=['r'])
+    @ public_roles.command(aliases=['r'])
     async def remove(self, ctx: commands.Context, role: discord.Role):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
