@@ -31,7 +31,7 @@ class mh(commands.Cog):
     async def register(self, ctx: commands.Context, ign: str):
         if ctx.author.discriminator in self.sheet.col_values(2):
             await ctx.send(embed=Embed(
-                title=f':x: {ctx.author.name} is already registered for the Minecraft Manhunt.'))
+                title=f':x: {ctx.author} is already registered for the Minecraft Manhunt.'))
             return None
 
         reg_ign = ign
@@ -39,20 +39,27 @@ class mh(commands.Cog):
             reg_ign = reg_ign[1:]
 
         if not self.ignValid(reg_ign):
-            await ctx.send(embed=Embed(title=f':x: Could not register the IGN: "{ign}", no such Minecraft Account found.'))
+            await ctx.send(embed=Embed(title=f':x: Could not register {ctx.author}\'s IGN: "{ign}", no such Minecraft Account found.'))
             return None
 
         row = [ctx.author.name, ctx.author.discriminator, reg_ign]
 
         self.sheet.append_row(row)
         await ctx.send(embed=Embed(
-            title=f':rocket: {ctx.author.name} registered for the Minecraft Manhunt with IGN: "{ign}"'))
+            title=f':rocket: {ctx.author} registered for the Minecraft Manhunt with IGN: "{ign}"'))
+
+    @register.error
+    async def register_error(ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
 
     @mh.command(aliases=['upd', 'u'])
     async def update(self, ctx: commands.Context, ign: str):
         if ctx.author.discriminator not in self.sheet.col_values(2):
             await ctx.send(embed=Embed(
-                title=f':x: {ctx.author.name} is not registered for the Minecraft Manhunt. Cannot update IGN without registering.'))
+                title=f':x: {ctx.author} is not registered for the Minecraft Manhunt. Cannot update IGN without registering.'))
             return None
 
         reg_ign = ign
@@ -60,7 +67,7 @@ class mh(commands.Cog):
             reg_ign = reg_ign[1:]
 
         if not self.ignValid(reg_ign):
-            await ctx.send(embed=Embed(title=f':x: Could not register the IGN: "{ign}", no such Minecraft Account found.'))
+            await ctx.send(embed=Embed(title=f':x: Could not update {ctx.author}\'s IGN to : "{ign}", no such Minecraft Account found.'))
             return None
 
         row_num = self.sheet.col_values(2).index(ctx.author.discriminator) + 1
@@ -68,6 +75,13 @@ class mh(commands.Cog):
         self.sheet.update_cell(row_num, 3, reg_ign)
         await ctx.send(embed=Embed(
             title=f':rocket: {ctx.author.name}\'s registered IGN updated to "{ign}"'))
+
+    @update.error
+    async def register_error(ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
 
     @mh.command(aliases=['ur', 'ureg'])
     async def unregister(self, ctx: commands.Context):
@@ -81,6 +95,13 @@ class mh(commands.Cog):
         self.sheet.delete_row(row_num)
         await ctx.send(embed=Embed(
             title=f':rocket: {ctx.author.name} Unregisterd from the Minecraft Manhunt.'))
+
+    @unregister.error
+    async def register_error(ctx: commands.Context, error):
+        if isinstance(error, commands.BadArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
+        elif isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
 
     def ignValid(self, ign: str):
         try:
