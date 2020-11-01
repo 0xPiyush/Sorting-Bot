@@ -32,4 +32,4 @@ class mh(commands.Cog):
 
 
 def setup(Bot):
-    Bot.add_cog(au(Bot))
+    Bot.add_cog(mh(Bot))
