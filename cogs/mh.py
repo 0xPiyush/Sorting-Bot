@@ -19,6 +19,11 @@ class mh(commands.Cog):
         self.sheet = self.client.open_by_key(
             '13bnby_zhIR22KvMzfDtOBt9e-goD8-ORZ0FMIynbriY').sheet1
 
+    @commands.group(aliases=['manhunt'])
+    async def mh(self, ctx: commands.Context):
+        if ctx.invoked_subcommand is None:
+            await ctx.send(embed=Embed(title=':x: Error, incomplete Command, plesase provide a subcommand'))
+
     @mh.command(aliases=['reg'])
     async def register(self, ctx: commands.Context, ign: str):
         if ctx.author.discriminator in self.sheet.col_values(2)[1:]:
