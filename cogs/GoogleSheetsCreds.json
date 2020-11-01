@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "sorting-bot-manhunt-api",
+  "private_key_id": "e7cfa898339e6ee34a4db68dfd7840331a3c0c20",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCsvgy9iae4MKja\nPxhRCl3OWadfB6MJ9BuGgUzdSJ+1F+BVwWUFJnJO1+HtvDToyX71f6PyAkptutKo\ndEe4QehQ0/hqQP4U0LZbI/6MgXIonViqh1BEMqPUXGzfXq/E8n1bTzakugf2IL60\nrf9N6J/68URZ6yxBJaxRTZEdGHh6qU/Ey9DcwXDAHSSrRhEvno7nLUlmaC+ZJDyP\n/1dyCmjg7ifoIHiGM7jrwhQ9sYKpiFD1XuIfy7nHIPPKU5fx1n0nNAIT9Q8jR1Ql\nioEG2WUkjiGzLtY7qEN8hTfXaul4RLq7Pdan7n+HcrpxQclYWs6wiVJBKp2lUzqX\nPJPgQnolAgMBAAECggEAGps+Lp5qdyAFjfIMboUMfElKUoSEW/bdm3rEakvyj2vR\nSZwbUW8BybuOKLYlpxpMBAeoKpEoQhz1r+0TE+IQ5Iw1lbYTfITGJaUWYrFYckGE\nA+YKGqr7GW0v9rqok4ru/HanubkOm14hSYaITYlwRLBPIRNsMk+Zaj9qg8L+YZP7\njxz+mIDphlASLYlQTsK6AWdcfpMgSfsCs18WXP9QEMUqwPwhAPXwIDRzuKFx+/bH\ng0Dz1LceCHYrD33HKaBjMbA0yWdbZe85g5gzhP9/+m705oaV/ZjQU8X9O10Dctx3\ncKiO+XA6lHERLotmq1eb/BjLniElSzxuN6QVWb8lGQKBgQDyS/TO1Hybd07/ZXBK\n1SQvsjXPGDMdWANz8pBdZINuGUlvqhiiibxiqvK/ALl6Kl1dFb8AFD3EYI7J1C1e\n5Za+X7KeGY09i9FnpX1XbxlTcIK4KlJvEYME80vf3iuc7Vvruioe6pbgpjCIUf7q\nZZCfpL0zksdl89OJI0S5X2Xr3QKBgQC2gxC5ZgWYR3pLzlp3pm1KpGZdZuZFmfDg\n5q5uKNloUxDaGGkbseTJTlGolbwB13/s12OzAkrxOG8qSyNViXewk0Os3OAZIKdv\no9lsVnoa7HfSalVBAsCOipXhHegbPNtY00Mwqsq6Ltpj4+OactYr1StGbhp/NTyt\nkIrYj6wm6QKBgGF3cov85/81+D4+lPRVVxAktQaQqockT4dFzRL0ivYwD91uZCiG\nFZTvRWTWKsZc4l++jq2+drZXTTkdM/8XhhMgtd5pUuquItd5t7kDRQHOoZbp1208\ncyL7p8rvOUYQKUjjA2yaW4UU9TLxIQUzRAEkKMPlSHbXpYFmAZA8Mui1AoGAeM7A\nnze8tFN7y/nHQDPVW/b+Gw0llySSoQuQojI/1iJFoVdPG5nhCq7gtmqGi+GNN8RK\npg76dDkavDAIL3JS23pe7Wk2nOtUaT1XibKkGHY1yf3AeMvNkYyCMQSOwpjByEXu\nz6P9lMe2nzAVVAJ3aYQspO30dAdVJr3qafaPySECgYEAi0/mDVuDPyhFEsWvNV6j\ny5w5Pc6Wwrn62282dGcQkkYZnCOb6iM+LFKl8RVQtLu6VQGOlIRS/Hst6sk5jbyH\n5cxjK+6dLv14CJSY8Okbu+YVh/JHbA/PehHSa+bFuTAxFukhQ4t7V8u82W+7hHJt\nGvZKXhhVFzAH1EeEL5a8Kzg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "sortingbot@sorting-bot-manhunt-api.iam.gserviceaccount.com",
+  "client_id": "100839914577207849180",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sortingbot%40sorting-bot-manhunt-api.iam.gserviceaccount.com"
+}
