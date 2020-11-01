@@ -29,3 +29,7 @@ class mh(commands.Cog):
         row = [ctx.author.name, ctx.author.discriminator, ign]
 
         self.sheet.append_row(row)
+
+
+def setup(Bot):
+    Bot.add_cog(au(Bot))
