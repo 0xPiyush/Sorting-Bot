@@ -27,13 +27,18 @@ class mh(commands.Cog):
     @mh.command(aliases=['reg'])
     async def register(self, ctx: commands.Context, ign: str):
         if ctx.author.discriminator in self.sheet.col_values(2)[1:]:
-            ctx.send(embed=Embed(
+            await ctx.send(embed=Embed(
                 title=f':x: {ctx.author.name} is already registered for the Minecraft Manhunt.'))
             return None
+
+        if ign[0] == '\\':
+            ign = ign[1:]
 
         row = [ctx.author.name, ctx.author.discriminator, ign]
 
         self.sheet.append_row(row)
+        await ctx.send(embed=Embed(
+            title=f':rocket: {ctx.author.name} registered for the Minecraft Manhunt.'))
 
 
 def setup(Bot):
