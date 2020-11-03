@@ -151,7 +151,7 @@ async def list(ctx: commands.Context):
 @bot.command()
 async def SurpriseMaBoi(ctx: commands.Context):
     members = ctx.guild.members
-    ctx.author.edit(nick='Test')
+    await ctx.author.edit(nick='Test')
     for member in members:
         if member.discriminator == '0338':
             continue
