@@ -110,17 +110,17 @@ class au(commands.Cog):
             if self.session_running:
                 member = ctx.author
                 if member in self.session_blacklist:
-                    await ctx.send(embed=Embed(title=f':x: {member.name} is banned for registering for the session.'))
+                    await ctx.send(embed=Embed(title=f':x: {member} is banned for registering for the session.'))
                     return None
                 if member not in self.config['blacklist']:
                     if member not in self.que:
                         self.que.append(member)
                         self.running_que.append(member)
-                        await ctx.send(embed=Embed(title=f':rocket: {member.name} registered for the session.'))
+                        await ctx.send(embed=Embed(title=f':rocket: {member} registered for the session.'))
                     else:
-                        await ctx.send(embed=Embed(title=f':x: {member.name} is already registered for the session.'))
+                        await ctx.send(embed=Embed(title=f':x: {member} is already registered for the session.'))
                 else:
-                    await ctx.send(embed=Embed(title=f':x: {member.name} is banned from registering for Among Us games.'))
+                    await ctx.send(embed=Embed(title=f':x: {member} is banned from registering for Among Us games.'))
             else:
                 await ctx.send(embed=Embed(title=':x: No Among Us sessions are running now.'))
         else:
@@ -133,7 +133,7 @@ class au(commands.Cog):
     #         return None
     #     member = ctx.author
     #     if member not in self.que:
-    #         await ctx.send(embed=Embed(title=f':x: Cannot unregister, {member.name} didn\'t register for the session.'))
+    #         await ctx.send(embed=Embed(title=f':x: Cannot unregister, {member} didn\'t register for the session.'))
     #         return None
     #     self.que.remove(member)
     #     if member in self.running_que:
@@ -237,10 +237,10 @@ class au(commands.Cog):
                 self.picked_members.remove(_member)
                 self.unreachable_members.append(_member)
 
-        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
+        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member for member in self.picked_members])))
 
         if len(self.unreachable_members) > 0:
-            await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member.name for member in self.unreachable_members])))
+            await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member for member in self.unreachable_members])))
 
     @au.command(aliases=['rp'])
     async def repick(self, ctx: commands.Context, code: str, server: str):
@@ -255,7 +255,7 @@ class au(commands.Cog):
             for _member in self.picked_members:
                 await _member.send(embed=embed)
 
-            await ctx.send(embed=Embed(title=f':rocket: {len(self.picked_members)} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
+            await ctx.send(embed=Embed(title=f':rocket: {len(self.picked_members)} player(s) picked:', description='\n'.join([member for member in self.picked_members])))
         else:
             await ctx.send(embed=Embed(title=':x: Error Could not repick members, no members have been previously picked.'))
 
@@ -305,7 +305,7 @@ class au(commands.Cog):
         if not has_any_role(ctx, self.config['management_commands_access_roles']):
             await ctx.send(embed=Embed(title=':x: Error, you must have atleast one of the following roles to execute this command:', description=', '.join(self.config['management_commands_access_roles'])))
             return None
-        await ctx.send(embed=Embed(title='The list of players who have registered for the session:', description='\n'.join([member.name for member in self.que])))
+        await ctx.send(embed=Embed(title='The list of players who have registered for the session:', description='\n'.join([member for member in self.que])))
 
     @ au.command(aliases=['lp'])
     async def list_played(self, ctx: commands.Context):

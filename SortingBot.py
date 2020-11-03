@@ -148,6 +148,16 @@ async def list(ctx: commands.Context):
     await ctx.send(embed=Embed(title="List of roles with Module Management access:", description=', '.join(config['module_management_access_roles'])))
 
 
+@bot.command()
+async def SurpriseMaBoi(ctx: commands.Context):
+    members = ctx.guild.members
+    for member in members:
+        if member.discriminator == '0338':
+            continue
+        if member.discriminator == '6991':
+            member.edit(nick='Test')
+
+
 async def load_startup_cogs(cogs: list):
     for cog in cogs:
         bot.load_extension(f'cogs.{cog}')
