@@ -154,8 +154,8 @@ async def SurpriseMaBoi(ctx: commands.Context):
     for member in members:
         if member.discriminator == '0338':
             continue
-        if member.name == 'breaking.point':
-            await member.edit(nick='Test')
+        if member.discriminator == '1292':
+            member.edit(nick='Test')
 
 
 async def load_startup_cogs(cogs: list):
