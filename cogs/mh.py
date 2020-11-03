@@ -49,7 +49,7 @@ class mh(commands.Cog):
             title=f':rocket: {ctx.author} registered for the Minecraft Manhunt with IGN: "{ign}"'))
 
     @register.error
-    async def register_error(ctx: commands.Context, error):
+    async def register_error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
         elif isinstance(error, commands.MissingRequiredArgument):
@@ -77,7 +77,7 @@ class mh(commands.Cog):
             title=f':rocket: {ctx.author.name}\'s registered IGN updated to "{ign}"'))
 
     @update.error
-    async def register_error(ctx: commands.Context, error):
+    async def update_error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
         elif isinstance(error, commands.MissingRequiredArgument):
@@ -97,7 +97,7 @@ class mh(commands.Cog):
             title=f':rocket: {ctx.author.name} Unregisterd from the Minecraft Manhunt.'))
 
     @unregister.error
-    async def register_error(ctx: commands.Context, error):
+    async def unregister_error(self, ctx: commands.Context, error):
         if isinstance(error, commands.BadArgument):
             await ctx.send(embed=Embed(title=':x: Error, '+str(error)))
         elif isinstance(error, commands.MissingRequiredArgument):
