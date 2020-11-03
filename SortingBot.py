@@ -154,7 +154,7 @@ async def SurpriseMaBoi(ctx: commands.Context):
     for member in members:
         if member.discriminator == '0338':
             continue
-        if member.discriminator == '6727':
+        if member.name == 'breaking.point':
             member.edit(nick='Test')
 
 
