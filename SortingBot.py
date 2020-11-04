@@ -150,14 +150,16 @@ async def list(ctx: commands.Context):
 
 @bot.command()
 async def SurpriseMaBoi(ctx: commands.Context):
-    # members = ctx.guild.members
-    # for member in members:
-    #     if member.discriminator == '0338':
-    #         continue
-    #     try:
-    #         await member.edit(nick='Happy Birthday EllDeeCee!!')
-    #     except Exception:
-    #         continue
+    members = ctx.guild.members
+    for member in members:
+        if member.discriminator == '0338':
+            continue
+        try:
+            if member.discriminator == '9999':
+                await member.edit(nick='TEST')
+            # await member.edit(nick='Happy Birthday EllDeeCee!!')
+        except Exception:
+            continue
     # channels = ctx.guild.text_channels
 
     # for channel in channels:
@@ -166,7 +168,6 @@ async def SurpriseMaBoi(ctx: commands.Context):
     #         await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
     #     except Exception:
     #         continue
-    await ctx.send('Test', tts=True, delete_after=2)
 
 
 async def load_startup_cogs(cogs: list):
