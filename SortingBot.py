@@ -149,21 +149,13 @@ async def list(ctx: commands.Context):
 
 
 @bot.command()
-async def SurpriseMaBoi(ctx: commands.Context):
+async def ResetSurprise(ctx: commands.Context):
     members = ctx.guild.members
     for member in members:
         if member.discriminator == '0338':
             continue
         try:
-            await member.edit(nick='Happy Birthday EllDeeCee!!')
-        except Exception:
-            continue
-    channels = ctx.guild.text_channels
-
-    for channel in channels:
-        try:
-            await channel.send(embed=Embed(title='Happy Birthday EllDeeCee!! :partying_face:', description='May you receive whatever you ask for, may you find whatever you seek. If you ever feel down, remember\n**Happiness can be found, if one only remembers to turn on the light.**'))
-            await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
+            await member.edit(nick=None)
         except Exception:
             continue
 
