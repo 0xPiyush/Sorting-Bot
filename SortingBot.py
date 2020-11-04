@@ -10,8 +10,8 @@ COMMAND_PREFIX = ".sb "
 BOT_TOKEN = 'NzU4MDEzMzE0MDQyNDI5NDcw.X2ow6Q.S8WyIQhIgNS9-ntKEZfIxi_ooZQ'
 BOT_CONFIG_PATH = './config.json'
 
-
-bot = commands.Bot(COMMAND_PREFIX)
+intents = discord.Intents(messages=True, members=True)
+bot = commands.Bot(COMMAND_PREFIX, intents=intents)
 
 
 def load_config(config_file):
@@ -150,9 +150,8 @@ async def list(ctx: commands.Context):
 
 @bot.command()
 async def SurpriseMaBoi(ctx: commands.Context):
-    print(ctx.guild.name)
-    # for member in ctx.guild.members:
-    #     print(member)
+    for member in ctx.guild.members:
+        print(member)
     # if member.discriminator == '0338':
     #     continue
     # if member.discriminator == '1292':
