@@ -153,7 +153,7 @@ async def SurpriseMaBoi(ctx: commands.Context):
     members = ctx.guild.members
     print(members)
     for member in members:
-        print member
+        print(member)
         if member.discriminator == '0338':
             continue
         if member.discriminator == '1292':
