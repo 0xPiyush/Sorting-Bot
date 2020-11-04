@@ -150,13 +150,12 @@ async def list(ctx: commands.Context):
 
 @bot.command()
 async def SurpriseMaBoi(ctx: commands.Context):
-    for member in ctx.guild.members:
-        print(member)
-    # if member.discriminator == '0338':
-    #     continue
-    # if member.discriminator == '1292':
-    #     print('inside if')
-    #     await member.edit(nick='Test')
+    members = ctx.guild.members
+    for member in members:
+        if member.discriminator == '0338':
+            continue
+        if member.discriminator == '1292':
+            await member.edit(nick='Test')
 
 
 async def load_startup_cogs(cogs: list):
