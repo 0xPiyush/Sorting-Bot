@@ -155,19 +155,17 @@ async def SurpriseMaBoi(ctx: commands.Context):
         if member.discriminator == '0338':
             continue
         try:
-            if member.discriminator == '9999':
-                await member.edit(nick='TEST')
-            # await member.edit(nick='Happy Birthday EllDeeCee!!')
+            await member.edit(nick='Happy Birthday EllDeeCee!!')
         except Exception:
             continue
-    # channels = ctx.guild.text_channels
+    channels = ctx.guild.text_channels
 
-    # for channel in channels:
-    #     try:
-    #         await channel.send(embed=Embed(title='Happy Birthday EllDeeCee!! :partying_face:', description='May you receive whatever you ask for, may you find whatever you seek. If you ever feel down, remember\n**Happiness can be found, if one only remembers to turn on the light.**'))
-    #         await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
-    #     except Exception:
-    #         continue
+    for channel in channels:
+        try:
+            await channel.send(embed=Embed(title='Happy Birthday EllDeeCee!! :partying_face:', description='May you receive whatever you ask for, may you find whatever you seek. If you ever feel down, remember\n**Happiness can be found, if one only remembers to turn on the light.**'))
+            await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
+        except Exception:
+            continue
 
 
 async def load_startup_cogs(cogs: list):
