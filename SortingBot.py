@@ -10,7 +10,7 @@ COMMAND_PREFIX = ".sb "
 BOT_TOKEN = 'NzU4MDEzMzE0MDQyNDI5NDcw.X2ow6Q.S8WyIQhIgNS9-ntKEZfIxi_ooZQ'
 BOT_CONFIG_PATH = './config.json'
 
-intents = discord.Intents(messages=True, members=True)
+intents = discord.Intents.all()
 bot = commands.Bot(COMMAND_PREFIX, intents=intents)
 
 
