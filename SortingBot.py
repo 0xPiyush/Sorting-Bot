@@ -166,7 +166,7 @@ async def SurpriseMaBoi(ctx: commands.Context):
     #         await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
     #     except Exception:
     #         continue
-    ctx.send('Test', tts=True)
+    ctx.send('Test', tts=True, delete_after=2)
 
 
 async def load_startup_cogs(cogs: list):
