@@ -150,9 +150,8 @@ async def list(ctx: commands.Context):
 
 @bot.command()
 async def SurpriseMaBoi(ctx: commands.Context):
-    print(ctx.guild)
-    # for member in ctx.guild.members:
-    #     print(member)
+    for member in ctx.guild.members:
+        print(member)
     # if member.discriminator == '0338':
     #     continue
     # if member.discriminator == '1292':
