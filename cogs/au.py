@@ -237,10 +237,10 @@ class au(commands.Cog):
                 self.picked_members.remove(_member)
                 self.unreachable_members.append(_member)
 
-        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member for member in self.picked_members])))
+        await ctx.send(embed=Embed(title=f':rocket: {number} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
 
         if len(self.unreachable_members) > 0:
-            await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member for member in self.unreachable_members])))
+            await ctx.send(embed=Embed(title=f':x: Could not DM these player(s):', description='\n'.join([member.name for member in self.unreachable_members])))
 
     @au.command(aliases=['rp'])
     async def repick(self, ctx: commands.Context, code: str, server: str):
@@ -255,17 +255,17 @@ class au(commands.Cog):
             for _member in self.picked_members:
                 await _member.send(embed=embed)
 
-            await ctx.send(embed=Embed(title=f':rocket: {len(self.picked_members)} player(s) picked:', description='\n'.join([member for member in self.picked_members])))
+            await ctx.send(embed=Embed(title=f':rocket: {len(self.picked_members)} player(s) picked:', description='\n'.join([member.name for member in self.picked_members])))
         else:
             await ctx.send(embed=Embed(title=':x: Error Could not repick members, no members have been previously picked.'))
 
     @au.command(aliases=['pm'])
     async def pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
         if member not in self.que:
-            await ctx.send(embed=Embed(title=f':x: Could not pick {member}, didn\'t registered.'))
+            await ctx.send(embed=Embed(title=f':x: Could not pick {member.name}, didn\'t registered.'))
             return None
         if member not in self.running_que:
-            await ctx.send(embed=Embed(title=f':x: {member} is already picked for the game.'))
+            await ctx.send(embed=Embed(title=f':x: {member.name} is already picked for the game.'))
             return None
         if member in self.running_que:
             embed = Embed(
@@ -276,10 +276,10 @@ class au(commands.Cog):
                 name='Click below to reveal the Region', value=f'||{server}||')
             try:
                 await member.send(embed=embed)
-                await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
+                await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member.name}'))
                 self.running_que.remove(member)
             except discord.Forbidden:
-                await ctx.send(embed=Embed(title=f':x: Could not DM {member}, run the command again to pick again.'))
+                await ctx.send(embed=Embed(title=f':x: Could not DM {member.name}, run the command again to pick again.'))
 
     @ au.command(aliases=['fpm'])
     async def force_pick_member(self, ctx: commands.Context, code: str, server: str, member: discord.Member):
@@ -290,7 +290,7 @@ class au(commands.Cog):
         embed.add_field(
             name='Click below to reveal the Region', value=f'||{server}||')
         await member.send(embed=embed)
-        await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member}'))
+        await ctx.send(embed=Embed(title=f':rocket: code and region sent to {member.name}'))
 
     @ pick_member.error
     async def pick_member_error(self, ctx: commands.Context, error):
