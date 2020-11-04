@@ -163,10 +163,10 @@ async def SurpriseMaBoi(ctx: commands.Context):
     # for channel in channels:
     #     try:
     #         await channel.send(embed=Embed(title='Happy Birthday EllDeeCee!! :partying_face:', description='May you receive whatever you ask for, may you find whatever you seek. If you ever feel down, remember\n**Happiness can be found, if one only remembers to turn on the light.**'))
-    #         await channel.send('/tts Happy Birthday Luke! May all your wishes come true.')
+    #         await channel.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
     #     except Exception:
     #         continue
-    await ctx.send('Happy Birthday Luke! May all your wishes come true.', tts=True)
+    ctx.send('Test', tts=True)
 
 
 async def load_startup_cogs(cogs: list):
