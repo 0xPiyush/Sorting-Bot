@@ -155,7 +155,7 @@ async def SurpriseMaBoi(ctx: commands.Context):
         if member.discriminator == '0338':
             continue
         if member.discriminator == '1292':
-            member.edit(nick='Test')
+            await member.edit(nick='Test')
 
 
 async def load_startup_cogs(cogs: list):
