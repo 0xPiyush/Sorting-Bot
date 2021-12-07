@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord.utils import get
 
 COMMAND_PREFIX = ".sb "
-BOT_TOKEN = 'NzU4MDEzMzE0MDQyNDI5NDcw.X2ow6Q.S8WyIQhIgNS9-ntKEZfIxi_ooZQ'
+BOT_TOKEN = 'YourTokenHere'
 BOT_CONFIG_PATH = './config.json'
 
 intents = discord.Intents.all()
